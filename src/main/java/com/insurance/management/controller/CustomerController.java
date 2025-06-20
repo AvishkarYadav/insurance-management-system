@@ -1,5 +1,7 @@
 package com.insurance.management.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,6 +34,19 @@ public class CustomerController {
 		return customerService.getDataById(customerId);
 	}
 
+	// Fetching By FullName
+	@GetMapping("/getByName/{fullName}")
+	List<Customer> getDataByName(@PathVariable("fullName") String fullName) {
+		return customerService.getDataByName(fullName);
+	}
+
+	// Fetching Customer By City
+	@GetMapping("/getByCity/{city}")
+	List<Customer> getDataByCity(@PathVariable("city") String city) {
+		return customerService.getDataByCity(city);
+
+	}
+
 	// Update Customer Data
 	@PutMapping("/update")
 	Customer updateData(@RequestBody Customer customer) {
@@ -44,4 +59,11 @@ public class CustomerController {
 	void deleteData(@PathVariable("customerId") Integer customerId) {
 		customerService.deleteData(customerId);
 	}
+
+	// List of customers
+	@GetMapping("/list")
+	public List<Customer> getAllCustomers() {
+		return customerService.getAllCustomers();
+	}
+
 }
