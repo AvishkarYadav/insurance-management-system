@@ -12,7 +12,7 @@ import com.insurance.management.model.Customer;
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, Serializable> {
 
-	public Customer findBycustomerId(Integer customerId);
+	
 
 	// For fetching customers by FullName
 	@Query(value = "select * from customer c where full_name=?1", nativeQuery = true)

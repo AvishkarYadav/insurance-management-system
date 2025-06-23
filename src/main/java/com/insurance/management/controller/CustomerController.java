@@ -3,19 +3,25 @@ package com.insurance.management.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.insurance.management.model.Customer;
 import com.insurance.management.service.CustomerService;
 import com.insurance.management.serviceimpl.CustomerServiceImpl;
 
+import jakarta.validation.Valid;
+
 @RestController
+@RequestMapping("/api/customer")
 public class CustomerController {
 
 	@Autowired
@@ -27,6 +33,8 @@ public class CustomerController {
 		Customer customers = customerService.saveData(customer);
 		return customers;
 	}
+
+	
 
 	// Fetching single customer data
 	@GetMapping("/get/{customerId}")
@@ -61,7 +69,7 @@ public class CustomerController {
 	}
 
 	// List of customers
-	@GetMapping("/list")
+	@GetMapping("/customerList")
 	public List<Customer> getAllCustomers() {
 		return customerService.getAllCustomers();
 	}

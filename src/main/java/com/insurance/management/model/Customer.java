@@ -1,9 +1,15 @@
 package com.insurance.management.model;
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -18,6 +24,17 @@ public class Customer {
 	private String phoneNumber;
 	private String city;
 	private int pinCode;
+
+	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Policy> policies;
+
+	public List<Policy> getPolicies() {
+		return policies;
+	}
+
+	public void setPolicies(List<Policy> policies) {
+		this.policies = policies;
+	}
 
 	public int getCustomerId() {
 		return customerId;
@@ -70,7 +87,7 @@ public class Customer {
 	@Override
 	public String toString() {
 		return "Customer [customerId=" + customerId + ", fullName=" + fullName + ", emailId=" + emailId
-				+ ", phoneNumber=" + phoneNumber + ", city=" + city + ", pinCode=" + pinCode + "]";
+				+ ", phoneNumber=" + phoneNumber + ", city=" + city + ", pinCode=" + pinCode +"]";
 	}
 
 }

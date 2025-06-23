@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.insurance.management.exception.CustomerNotFoundException;
+import com.insurance.management.exception.ResourceNotFoundException;
 import com.insurance.management.model.Customer;
 import com.insurance.management.repository.CustomerRepository;
 import com.insurance.management.service.CustomerService;
@@ -24,11 +24,9 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Override
 	public Customer getDataById(Integer customerId) {
-		Customer customer = customerRepository.findBycustomerId(customerId);
-		if (customer == null) {
-			throw new CustomerNotFoundException(customerId + " <-Customer Not Found");
-		} else
-			return customer;
+		return customerRepository.findById(customerId)
+				.orElseThrow(() -> new RuntimeException("Customer Not Found with Id" + customerId));
+
 	}
 
 	@Override
@@ -37,7 +35,7 @@ public class CustomerServiceImpl implements CustomerService {
 		return customer3;
 	}
 
-	// Get cusotmer by ID
+	// Get customer by ID
 	@Override
 	public void deleteData(Integer customerId) {
 		customerRepository.deleteById(customerId);
