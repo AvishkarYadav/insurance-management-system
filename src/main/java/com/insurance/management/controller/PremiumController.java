@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -48,7 +49,13 @@ public class PremiumController {
 
 	// Delete premium from data
 	@DeleteMapping("/delete/{premiumId}")
-	void deletePremium(@PathVariable ("premiumId") Integer premiumId) {
+	void deletePremium(@PathVariable("premiumId") Integer premiumId) {
 		premiumService.deletePremium(premiumId);
+	}
+
+	@PutMapping("/update")
+	public Premium updatePremium(@RequestBody Premium premium) {
+		return premiumService.updatePremium(premium);
+
 	}
 }

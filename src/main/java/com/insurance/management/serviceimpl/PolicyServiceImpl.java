@@ -39,4 +39,17 @@ public class PolicyServiceImpl implements PolicyService {
 		policyRepository.deleteById(policyId);
 	}
 
+	@Override
+	public Policy updatePolicy(Policy policy) {
+		Integer policyId = policy.getPolicyId();
+		Policy existingPolicy = policyRepository.findById(policyId)
+				.orElseThrow(() -> new RuntimeException("Policy Id Not Found :" + policyId));
+		existingPolicy.setPolicyNumber(policy.getPolicyNumber());
+		existingPolicy.setPolicyType(policy.getPolicyType());
+		existingPolicy.setStartDate(policy.getStartDate());
+		existingPolicy.setEndDate(policy.getEndDate());
+		existingPolicy.setCoverageAmount(policy.getCoverageAmount());
+		existingPolicy.setPremiumAmount(policy.getPremiumAmount());
+		return policyRepository.save(existingPolicy);	}
+
 }

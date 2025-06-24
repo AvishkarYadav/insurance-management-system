@@ -25,7 +25,7 @@ public class CustomerServiceImpl implements CustomerService {
 	@Override
 	public Customer getDataById(Integer customerId) {
 		return customerRepository.findById(customerId)
-				.orElseThrow(() -> new RuntimeException("Customer Not Found with Id" + customerId));
+				.orElseThrow(() -> new RuntimeException("Customer Not Found with Id :" + customerId));
 
 	}
 

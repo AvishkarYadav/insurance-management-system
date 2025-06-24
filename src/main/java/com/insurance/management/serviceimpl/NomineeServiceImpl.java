@@ -53,4 +53,18 @@ public class NomineeServiceImpl implements NomineeService {
 		nomineeRepository.deleteById(nomineeId);
 	}
 
+	@Override
+	public Nominee updateNominee(Nominee nominee) {
+		Integer id = nominee.getNomineeId();
+		Nominee existing = nomineeRepository.findById(id)
+				.orElseThrow(() -> new RuntimeException("Nominee not found with ID " + id));
+
+		existing.setNomineeNumber(nominee.getNomineeNumber());
+		existing.setFullName(nominee.getFullName());
+		existing.setRelation(nominee.getRelation());
+		existing.setAge(nominee.getAge());
+		return nomineeRepository.save(existing);
+
+	}
+
 }

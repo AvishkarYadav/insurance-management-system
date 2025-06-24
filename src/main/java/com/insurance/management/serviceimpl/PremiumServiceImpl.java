@@ -11,6 +11,8 @@ import com.insurance.management.repository.PolicyRepository;
 import com.insurance.management.repository.PremiumRepository;
 import com.insurance.management.service.PremiumService;
 
+import jakarta.persistence.criteria.CriteriaBuilder.In;
+
 @Service
 public class PremiumServiceImpl implements PremiumService {
 
@@ -48,6 +50,21 @@ public class PremiumServiceImpl implements PremiumService {
 	@Override
 	public void deletePremium(Integer premiumId) {
 		premiumRepository.deleteById(premiumId);
+	}
+
+	@Override
+	public Premium updatePremium(Premium premium) {
+		Integer premiumId = premium.getPremiumId();
+		Premium existing = premiumRepository.findById(premiumId)
+				.orElseThrow(() -> new RuntimeException("Premium not found with ID " + premiumId));
+
+		existing.setAmount(premium.getAmount());
+		existing.setDueDate(premium.getDueDate());
+		existing.setPaymentDate(premium.getPaymentDate());
+		existing.setStatus(premium.getStatus());
+
+		return premiumRepository.save(existing);
+
 	}
 
 }

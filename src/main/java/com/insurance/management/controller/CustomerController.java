@@ -28,16 +28,14 @@ public class CustomerController {
 	private CustomerService customerService;
 
 	// Save customer data
-	@PostMapping("/save")
+	@PostMapping("/add")
 	Customer saveData(@RequestBody Customer customer) {
 		Customer customers = customerService.saveData(customer);
 		return customers;
 	}
 
-	
-
 	// Fetching single customer data
-	@GetMapping("/get/{customerId}")
+	@GetMapping("/getById/{customerId}")
 	Customer getDatabyId(@PathVariable("customerId") Integer customerId) {
 		return customerService.getDataById(customerId);
 	}
@@ -69,7 +67,7 @@ public class CustomerController {
 	}
 
 	// List of customers
-	@GetMapping("/customerList")
+	@GetMapping("/list")
 	public List<Customer> getAllCustomers() {
 		return customerService.getAllCustomers();
 	}

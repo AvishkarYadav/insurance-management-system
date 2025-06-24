@@ -38,6 +38,8 @@ public class Policy {
 	private List<Nominee> nominees;
 	@OneToMany(mappedBy = "policy", cascade = CascadeType.ALL)
 	private List<Premium> premiums;
+	@OneToMany(mappedBy = "policy", cascade = CascadeType.ALL)
+	private List<Claim> claims;
 
 	public Integer getPolicyId() {
 		return policyId;
@@ -117,6 +119,14 @@ public class Policy {
 
 	public void setPremiums(List<Premium> premiums) {
 		this.premiums = premiums;
+	}
+
+	public List<Claim> getClaims() {
+		return claims;
+	}
+
+	public void setClaims(List<Claim> claims) {
+		this.claims = claims;
 	}
 
 	@Override

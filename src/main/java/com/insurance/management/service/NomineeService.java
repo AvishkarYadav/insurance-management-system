@@ -18,4 +18,7 @@ public interface NomineeService {
 	// For Delete Nominee Data
 	void deleteNominee(Integer nomineeId);
 
+	//For Update Nominee
+	Nominee updateNominee(Nominee nominee);
+	
 }

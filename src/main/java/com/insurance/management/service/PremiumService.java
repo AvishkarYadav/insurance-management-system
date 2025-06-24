@@ -20,5 +20,8 @@ public interface PremiumService {
 
 	// Delete premium from data
 	void deletePremium(Integer premiumId);
+	
+	//For update Premium
+	Premium updatePremium(Premium premium);
 
 }
