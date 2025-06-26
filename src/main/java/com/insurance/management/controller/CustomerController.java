@@ -25,7 +25,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Tag(name = "customer", description = "insurance API system")
+@Tag(name = "Customer", description = "Operations related to cusotmer registration ,updation and retrieval")
 @RestController
 @RequestMapping("/api/customer")
 public class CustomerController {
@@ -51,6 +51,8 @@ public class CustomerController {
 
 	// Fetching single customer data
 	@GetMapping("/getById/{customerId}")
+	@Operation(summary = "Fetch Customer Data By ID", description = "Rest API used to fetch customer data by id")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Successful operation") })
 	CustomerDTO getDatabyId(@PathVariable("customerId") Integer customerId) {
 		logger.info("Fetching customer data by ID: {}", customerId);
 		Customer customer = customerService.getDataById(customerId);
@@ -59,6 +61,8 @@ public class CustomerController {
 
 	// Fetching By FullName
 	@GetMapping("/getByName/{fullName}")
+	@Operation(summary = "Fetch Customer Data By Name", description = "Rest API used to fetch customer data by name")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Successful operation") })
 	List<CustomerDTO> getDataByName(@PathVariable("fullName") String fullName) {
 		logger.info("Fetching customer data by FullName: {}", fullName);
 		List<Customer> customers = customerService.getDataByName(fullName);
@@ -67,6 +71,8 @@ public class CustomerController {
 
 	// Fetching Customer By City
 	@GetMapping("/getByCity/{city}")
+	@Operation(summary = "Fetch Customer Data By City", description = "Rest API used to fetch customer data by city")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Successful operation") })
 	List<CustomerDTO> getDataByCity(@PathVariable("city") String city) {
 		logger.info("Fetching customer data by City: {}", city);
 		List<Customer> customers = customerService.getDataByName(city);
@@ -75,6 +81,8 @@ public class CustomerController {
 
 	// Update Customer Data
 	@PutMapping("/update")
+	@Operation(summary = "Update Customer Data", description = "Rest API used to update customer data")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Successful operation") })
 	CustomerDTO updateData(@RequestBody CustomerDTO customerDto) {
 		logger.info("Updating customer with ID: {}", customerDto.getCustomerId());
 		Customer customer3 = customerService.saveData(CustomerMapper.toEntity(customerDto));
@@ -84,6 +92,8 @@ public class CustomerController {
 
 	// Delete Customer Data
 	@DeleteMapping("/delete/{customerId}")
+	@Operation(summary = "Delete Customer Data", description = "Rest API used to delete customer data")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Successful operation") })
 	void deleteData(@PathVariable("customerId") Integer customerId) {
 		logger.info("Deleting customer with ID: {}", customerId);
 		customerService.deleteData(customerId);
@@ -92,6 +102,8 @@ public class CustomerController {
 
 	// List of customers
 	@GetMapping("/list")
+	@Operation(summary = "Fetch All Customers List", description = "Rest API used to fetch customer list")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Successful operation") })
 	public List<CustomerDTO> getAllCustomers() {
 		logger.info("Fetching all customers...");
 		List<Customer> customers = customerService.getAllCustomers();
