@@ -26,6 +26,7 @@ public class Customer {
 	private int pinCode;
 
 	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+	@JsonManagedReference(value = "customer-policy")
 	private List<Policy> policies;
 
 	public List<Policy> getPolicies() {
@@ -87,7 +88,7 @@ public class Customer {
 	@Override
 	public String toString() {
 		return "Customer [customerId=" + customerId + ", fullName=" + fullName + ", emailId=" + emailId
-				+ ", phoneNumber=" + phoneNumber + ", city=" + city + ", pinCode=" + pinCode +"]";
+				+ ", phoneNumber=" + phoneNumber + ", city=" + city + ", pinCode=" + pinCode + "]";
 	}
 
 }

@@ -12,11 +12,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.insurance.management.dto.CustomerDTO;
+import com.insurance.management.mapper.CustomerMapper;
 import com.insurance.management.model.Customer;
 import com.insurance.management.service.CustomerService;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@Tag(name = "customer", description = "insurance API system")
 @RestController
 @RequestMapping("/api/customer")
 public class CustomerController {
@@ -28,43 +37,49 @@ public class CustomerController {
 
 	// Save customer data
 	@PostMapping("/add")
-	Customer saveData(@RequestBody Customer customer) {
-		// logger part
-		logger.info("Adding new customer: {}", customer.getFullName());
-		Customer customers = customerService.saveData(customer);
-		logger.info("New customer added succesfully: {}", customer.getCustomerId());
-		return customers;
+	@Operation(summary = "Save Customer Data", description = "Rest API used to store customer data")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Successful operation") })
+	public CustomerDTO saveData(@RequestBody CustomerDTO customerDTO) {
+		logger.info("Adding new customer: {}", customerDTO.getFullName());
+
+		Customer savedCustomer = customerService.saveData(CustomerMapper.toEntity(customerDTO));
+		CustomerDTO responseDTO = CustomerMapper.toDto(savedCustomer);
+
+		logger.info("New customer added successfully: {}", responseDTO.getCustomerId());
+		return responseDTO;
 	}
 
 	// Fetching single customer data
 	@GetMapping("/getById/{customerId}")
-	Customer getDatabyId(@PathVariable("customerId") Integer customerId) {
+	CustomerDTO getDatabyId(@PathVariable("customerId") Integer customerId) {
 		logger.info("Fetching customer data by ID: {}", customerId);
-		return customerService.getDataById(customerId);
+		Customer customer = customerService.getDataById(customerId);
+		return CustomerMapper.toDto(customer);
 	}
 
 	// Fetching By FullName
 	@GetMapping("/getByName/{fullName}")
-	List<Customer> getDataByName(@PathVariable("fullName") String fullName) {
+	List<CustomerDTO> getDataByName(@PathVariable("fullName") String fullName) {
 		logger.info("Fetching customer data by FullName: {}", fullName);
-		return customerService.getDataByName(fullName);
+		List<Customer> customers = customerService.getDataByName(fullName);
+		return CustomerMapper.toDtoList(customers);
 	}
 
 	// Fetching Customer By City
 	@GetMapping("/getByCity/{city}")
-	List<Customer> getDataByCity(@PathVariable("city") String city) {
+	List<CustomerDTO> getDataByCity(@PathVariable("city") String city) {
 		logger.info("Fetching customer data by City: {}", city);
-		return customerService.getDataByCity(city);
-
+		List<Customer> customers = customerService.getDataByName(city);
+		return CustomerMapper.toDtoList(customers);
 	}
 
 	// Update Customer Data
 	@PutMapping("/update")
-	Customer updateData(@RequestBody Customer customer) {
-		logger.info("Updating customer with ID: {}", customer.getCustomerId());
-		Customer customer3 = customerService.saveData(customer);
+	CustomerDTO updateData(@RequestBody CustomerDTO customerDto) {
+		logger.info("Updating customer with ID: {}", customerDto.getCustomerId());
+		Customer customer3 = customerService.saveData(CustomerMapper.toEntity(customerDto));
 		logger.info("Updated customer data successfully. ");
-		return customer3;
+		return CustomerMapper.toDto(customer3);
 	}
 
 	// Delete Customer Data
@@ -77,9 +92,9 @@ public class CustomerController {
 
 	// List of customers
 	@GetMapping("/list")
-	public List<Customer> getAllCustomers() {
+	public List<CustomerDTO> getAllCustomers() {
 		logger.info("Fetching all customers...");
-		return customerService.getAllCustomers();
+		List<Customer> customers = customerService.getAllCustomers();
+		return CustomerMapper.toDtoList(customers);
 	}
-
 }

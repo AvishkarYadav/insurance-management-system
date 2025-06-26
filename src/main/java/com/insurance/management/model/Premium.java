@@ -2,6 +2,8 @@ package com.insurance.management.model;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,6 +25,7 @@ public class Premium {
 	private String status;
 	@ManyToOne
 	@JoinColumn(name = "policy_id")
+	@JsonBackReference(value = "policy-premium")
 	private Policy policy;
 
 	public Integer getPremiumId() {

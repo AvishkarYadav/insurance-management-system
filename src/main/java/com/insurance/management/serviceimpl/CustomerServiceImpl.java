@@ -2,15 +2,15 @@ package com.insurance.management.serviceimpl;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.insurance.management.exception.ResourceNotFoundException;
+import com.insurance.management.dto.CustomerDTO;
 import com.insurance.management.model.Customer;
 import com.insurance.management.repository.CustomerRepository;
 import com.insurance.management.service.CustomerService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
@@ -72,5 +72,8 @@ public class CustomerServiceImpl implements CustomerService {
 		logger.info("Fetching customer by city: {}", city);
 		return customerRepository.findByCity(city);
 	}
+	
+	
+
 
 }

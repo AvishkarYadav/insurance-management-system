@@ -2,6 +2,7 @@ package com.insurance.management.model;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.insurance.management.enums.ClaimStatus;
 
 import jakarta.persistence.Entity;
@@ -28,6 +29,7 @@ public class Claim {
 	private String description; // field to explain the reason.
 	@ManyToOne
 	@JoinColumn(name = "policy_id")
+	@JsonBackReference(value = "policy-claim")
 	private Policy policy;
 
 	public Integer getClaimId() {

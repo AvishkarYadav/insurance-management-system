@@ -26,6 +26,7 @@ public class Nominee {
 	private int age;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "policy_id")
+	@JsonBackReference(value = "policy-nominee")
 	private Policy policy;
 
 	public Integer getNomineeId() {

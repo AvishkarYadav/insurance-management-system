@@ -33,12 +33,16 @@ public class Policy {
 	private double premiumAmount;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "customer_id")
+	@JsonBackReference(value = "customer-policy")
 	private Customer customer;
 	@OneToMany(mappedBy = "policy", cascade = CascadeType.ALL)
+	@JsonManagedReference(value = "policy-nominee")
 	private List<Nominee> nominees;
 	@OneToMany(mappedBy = "policy", cascade = CascadeType.ALL)
+	@JsonManagedReference(value = "policy-premium")
 	private List<Premium> premiums;
 	@OneToMany(mappedBy = "policy", cascade = CascadeType.ALL)
+	@JsonManagedReference(value = "policy-claim")
 	private List<Claim> claims;
 
 	public Integer getPolicyId() {
