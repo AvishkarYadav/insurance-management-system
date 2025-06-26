@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.insurance.management.dto.PolicyDTO;
+import com.insurance.management.mapper.PolicyMapper;
 import com.insurance.management.model.Policy;
 import com.insurance.management.service.PolicyService;
 import org.slf4j.Logger;
@@ -27,21 +29,26 @@ public class PolicyController {
 	private static final Logger logger = LoggerFactory.getLogger(PolicyController.class);
 
 	@PostMapping("/add")
-	Policy addPolicy(@RequestBody Policy policy) {
-		logger.info("Adding new Policy: {}", policy.getPolicyId());
-		return policyService.addPolicy(policy);
+	PolicyDTO addPolicy(@RequestBody PolicyDTO policyDTO) {
+		logger.info("Adding new Policy: {}", policyDTO.getPolicyId());
+		Policy policy = policyService.addPolicy(PolicyMapper.toEntity(policyDTO));
+		PolicyDTO dto = PolicyMapper.toDto(policy);
+		logger.info("New Policy Added succesfully: {}", policyDTO.getPolicyId());
+		return dto;
 	}
 
 	@GetMapping("/list")
-	List<Policy> getAllPolicies() {
+	List<PolicyDTO> getAllPolicies() {
 		logger.info("Fetching all policies...");
-		return policyService.getAllPolicies();
+		List<Policy> policies = policyService.getAllPolicies();
+		return PolicyMapper.toDtoList(policies);
 	}
 
 	@GetMapping("/getById/{policyId}")
-	Policy getPolicyById(@PathVariable("policyId") Integer policyId) {
+	PolicyDTO getPolicyById(@PathVariable("policyId") Integer policyId) {
 		logger.info("Fetching Policy data by ID: {}", policyId);
-		return policyService.getPolicyById(policyId);
+		Policy policy = policyService.getPolicyById(policyId);
+		return PolicyMapper.toDto(policy);
 	}
 
 	@DeleteMapping("/delete/{policyId}")
@@ -51,8 +58,10 @@ public class PolicyController {
 	}
 
 	@PutMapping("/update")
-	Policy updatePolicy(@RequestBody Policy policy) {
-		logger.info("Updating Policy with ID: {}", policy.getPolicyId());
-		return policyService.updatePolicy(policy);
+	PolicyDTO updatePolicy(@RequestBody PolicyDTO policyDTO) {
+		logger.info("Updating Policy with ID: {}", policyDTO.getPolicyId());
+		Policy policy2 = policyService.updatePolicy(PolicyMapper.toEntity(policyDTO));
+		logger.info("Updated Policy with ID: {}", policyDTO.getPolicyId());
+		return PolicyMapper.toDto(policy2);
 	}
 }

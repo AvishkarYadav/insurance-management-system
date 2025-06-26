@@ -37,7 +37,7 @@ public class PolicyServiceImpl implements PolicyService {
 	public Policy getPolicyById(Integer policyId) {
 		logger.info("Fetching policy by ID: {}", policyId);
 		return policyRepository.findById(policyId)
-				.orElseThrow(() -> new RuntimeException("Policy Not found with ID" + policyId));
+				.orElseThrow(() -> new RuntimeException("Policy Not found with ID :" + policyId));
 	}
 
 	@Override
