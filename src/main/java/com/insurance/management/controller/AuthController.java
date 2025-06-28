@@ -1,6 +1,13 @@
 package com.insurance.management.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.insurance.management.dto.RegisterRequest;
 import com.insurance.management.model.User;
 import com.insurance.management.repository.UserRepository;
+import com.insurance.management.serviceimpl.CustomUserDetailsService;
+
 
 @RestController
 @RequestMapping("/api/auth")
@@ -21,6 +30,11 @@ public class AuthController {
 
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
+
+
+
+
+	
 
 	@PostMapping("/register")
 	public String registerUser(@RequestBody RegisterRequest request) {
@@ -38,4 +52,9 @@ public class AuthController {
 		userRepository.save(user);
 		return "User registered successfully";
 	}
-}
+
+	
+		
+	}
+
+
