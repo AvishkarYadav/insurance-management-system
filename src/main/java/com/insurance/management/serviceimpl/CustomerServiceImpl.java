@@ -6,10 +6,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.insurance.management.dto.CustomerDTO;
+import com.insurance.management.model.Claim;
 import com.insurance.management.model.Customer;
+import com.insurance.management.model.Nominee;
+import com.insurance.management.model.Policy;
+import com.insurance.management.model.Premium;
+import com.insurance.management.repository.ClaimRepository;
 import com.insurance.management.repository.CustomerRepository;
+import com.insurance.management.repository.NomineeRepository;
+import com.insurance.management.repository.PolicyRepository;
+import com.insurance.management.repository.PremiumRepository;
 import com.insurance.management.service.CustomerService;
 
 @Service
@@ -17,6 +26,18 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Autowired
 	private CustomerRepository customerRepository;
+
+	@Autowired
+	private PolicyRepository policyRepository;
+
+	@Autowired
+	private NomineeRepository nomineeRepository;
+
+	@Autowired
+	private PremiumRepository premiumRepository;
+
+	@Autowired
+	private ClaimRepository claimRepository;
 
 	private static final Logger logger = LoggerFactory.getLogger(CustomerServiceImpl.class);
 
@@ -72,8 +93,37 @@ public class CustomerServiceImpl implements CustomerService {
 		logger.info("Fetching customer by city: {}", city);
 		return customerRepository.findByCity(city);
 	}
-	
-	
 
+	@Transactional
+	public Customer saveCustomerWithAllDetails(Customer customer) {
+		// Save customer
+		Customer savedCustomer = customerRepository.save(customer);
+
+		// Save policies
+		for (Policy policy : customer.getPolicies()) {
+			policy.setCustomer(savedCustomer);
+			Policy savedPolicy = policyRepository.save(policy);
+
+			// Save nominees
+			for (Nominee nominee : policy.getNominees()) {
+				nominee.setPolicy(savedPolicy);
+				nomineeRepository.save(nominee);
+			}
+
+			// Save premiums
+			for (Premium premium : policy.getPremiums()) {
+				premium.setPolicy(savedPolicy);
+				premiumRepository.save(premium);
+			}
+
+			// Save claims
+			for (Claim claim : policy.getClaims()) {
+				claim.setPolicy(savedPolicy);
+				claimRepository.save(claim);
+			}
+		}
+
+		return savedCustomer;
+	}
 
 }

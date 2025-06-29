@@ -3,6 +3,12 @@ package com.insurance.management.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,11 +16,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.insurance.management.dto.CustomerDTO;
 import com.insurance.management.mapper.CustomerMapper;
 import com.insurance.management.model.Customer;
+import com.insurance.management.repository.CustomerRepository;
 import com.insurance.management.service.CustomerService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -34,6 +42,18 @@ public class CustomerController {
 	private CustomerService customerService;
 
 	private static final Logger logger = LoggerFactory.getLogger(CustomerController.class);
+
+	@Autowired
+	private CustomerRepository customerRepository;
+
+	// Pagination
+	@GetMapping("/paginated")
+	public Page<Customer> getPaginatedCustomers(@RequestParam(defaultValue = "0") int page,
+			@RequestParam(defaultValue = "5") int size) {
+		Pageable pageable = PageRequest.of(page, size);
+		return customerRepository.findAll(pageable);
+
+	}
 
 	// Save customer data
 	@PostMapping("/add")
@@ -108,5 +128,11 @@ public class CustomerController {
 		logger.info("Fetching all customers...");
 		List<Customer> customers = customerService.getAllCustomers();
 		return CustomerMapper.toDtoList(customers);
+	}
+
+	@PostMapping("/save-all")
+	public ResponseEntity<Customer> saveAllData(@RequestBody Customer customer) {
+		Customer saved = customerService.saveCustomerWithAllDetails(customer);
+		return new ResponseEntity<>(saved, HttpStatus.CREATED);
 	}
 }

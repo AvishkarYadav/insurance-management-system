@@ -26,4 +26,8 @@ public interface CustomerService {
 
 	// List of customers
 	List<Customer> getAllCustomers();
+
+	
+	//Saving customers with all details
+	Customer saveCustomerWithAllDetails(Customer customer);
 }
